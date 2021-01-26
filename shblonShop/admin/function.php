@@ -5,7 +5,7 @@ $pasword="03a11a2018a";
 $dhname="eshop1";
 
 function connect(){
-	$conn=mysqli_connect("localhost","root","03a11a2018a","eshop1");
+	$conn=mysqli_connect("localhost","root","","eshop1");
 	if(!$conn){
 		die("Connection failed: ".mysqli_connect_error());
 	}
