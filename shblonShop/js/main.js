@@ -65,9 +65,9 @@ function saveCart(){
 }
 function showMiniCart(){
 	//показываем мини карзину
-	var out="";
+	var out=0;
 	for(var key in cart){	
-		out+=key+"---"+cart[key]+'<br>';
+		out++;
 	}
 	$('.mini-cart').html(out);
 }
