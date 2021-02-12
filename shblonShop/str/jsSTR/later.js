@@ -77,4 +77,4 @@ function loadCard(){
 $(document).ready(function(){
 	init();
 	loadCard();
-})
+});
