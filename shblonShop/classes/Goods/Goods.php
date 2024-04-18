@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Goods;
+namespace classes\Goods;
 
 
-use DB\RequestDB;
+use classes\DB\RequestDB;
 
 class Goods extends RequestDB
 {

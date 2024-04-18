@@ -14,39 +14,25 @@ function loadCard(){
 		$('.main-cart').html('Корзина пуста');
 	}
 }
-
 function showCart(){
-cart=JSON.parse(localStorage.getItem('cart'));
-var a=Object.keys(cart);
-		
-			
-$.post(
-		'..\\core\\core.php',
-		{
-			"action":"showCart",
-			'id': a
-		},
-		showOut
-	);
-}
-function showOut(data){
-	console.log(data);
-	data=JSON.parse(data);
-		var out='';
-			for(var key in data){
-				out+='<button data-id="'+data[key].id+'"class="del-goods">x</button>';
-				out+='<img src="..\\..\\img\\'+data[key].img+'"width="50px"height="50px"/>';
-				out+=''+data[key].name+'';
-				out+=''+cart[key]+'';
-				out+='  <button data-id="'+data[key].id+'" class="plus-goods">+</button>  ';
-				out+='<button data-id="'+data[key].id+'" class="minus-goods">-</button>  ';
-				out+="Цена - "+cart[key]*data[key].cost;
+	$.getJSON('Goods.json',function(data){
+			var goods=data;
+			var out='';
+			for(var id in cart){
+				out+=`<button data-id="${id}"class="del-goods">x</button>`;
+				out+=`  <img src="..\\img\\${goods[id].img}"width="50px"height="50px"/>`;
+				out+=` ${goods[id].name}`;
+				out+=` ${cart[id]}`;
+				out+=`  <button data-id="${id}" class="plus-goods">+</button>  `;
+				out+=`<button data-id="${id}" class="minus-goods">-</button>  `;
+			out+="Цена - "+cart[id]*goods[id].cost;
 				out+='<br/>';
 			}
 			$('.main-cart').html(out);
-			$('.del-goods').on('click',delGoods);
-			$('.plus-goods').on('click',PlusGoods);
-			$('.minus-goods').on('click',MinusGoods);
+			$('.del-Goods').on('click',delGoods);
+			$('.plus-Goods').on('click',PlusGoods);
+			$('.minus-Goods').on('click',MinusGoods);
+	});
 }
 
 function MinusGoods(){

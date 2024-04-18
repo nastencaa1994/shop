@@ -1,6 +1,6 @@
 <?php
 // читать json файл
-$json=file_get_contents('../goods.json');
+$json=file_get_contents('../Goods.json');
 $json=json_decode($json,true);
 
 //письмо

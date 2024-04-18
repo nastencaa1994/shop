@@ -32,12 +32,12 @@ function goodsOut(data){
 		// out+=`<button class="add-to-cart"data-id="${key}">Купить</button>`;
 		// out+='</div>';
 	
-	$('.goods-out').html(out);
+	$('.Goods-out').html(out);
 	$('.add-to-cart').on('click',addToCart);
 	$('.later').on('click',addLater);
 }
 else {
-	$('.goods-out').html('Такого товара не существует');
+	$('.Goods-out').html('Такого товара не существует');
 }
 }
 function addLater(){

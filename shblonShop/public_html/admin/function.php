@@ -111,7 +111,7 @@ function writeJSON(){
 		while($row=mysqli_fetch_assoc($result)){
 			$out[$row["id"]]=$row;
 			}
-		$a=file_put_contents('..\\goods.json',json_encode($out));
+		$a=file_put_contents('..\\Goods.json',json_encode($out));
 	} 
 	else {
 		echo "0";

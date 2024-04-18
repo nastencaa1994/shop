@@ -1,5 +1,5 @@
 <?php
-namespace DB;
+namespace classes\DB;
 
 abstract class RequestDB
 {

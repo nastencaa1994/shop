@@ -1,6 +1,6 @@
 var cart={};
 function init(){
-	//вычитуем файл goods.json
+	//вычитуем файл Goods.json
 	$.post(
 		'..\\core\\core.php',
 		{
@@ -19,20 +19,20 @@ function goodsOut(data){
 		later=JSON.parse(localStorage.getItem('later'));
 		for(var key in later){
 		out+='<div class="cart">';
-		out+='<button class="del-goods"data-id="'+data[key].id+'">x</button>';
+		out+='<button class="del-Goods"data-id="'+data[key].id+'">x</button>';
 		out+='<p class="name">'+data[key].name+'</p>';
 		out+='<img src="..\\img\\'+data[key].img+'"alt=""width="100%"height="53%"/>';
 		out+='<div class="cost">'+data[key].cost+'</div>';
 		out+='<button class="add-to-cart"data-id="'+data[key].id+'">Отправить в карзину</button>';
-		out+='<a href="goods.html#'+data[key].id+'">Посмотреть товар</a>';
+		out+='<a href="Goods.html#'+data[key].id+'">Посмотреть товар</a>';
 		out+='</div>';
 		}
-		$('.goods-out').html(out);
+		$('.Goods-out').html(out);
 	}
 	else{
-		$('.goods-out').html('Список желаний пуст');
+		$('.Goods-out').html('Список желаний пуст');
 		}
-	$('.del-goods').on('click',delGoods);
+	$('.del-Goods').on('click',delGoods);
 	$('.add-to-cart').on('click',addToCart);
 }
 function delGoods(){

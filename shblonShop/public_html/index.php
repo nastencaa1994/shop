@@ -1,51 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-	<script type="text/javascript" src="js\jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="js\main.js"></script>
-	<meta charset="UTF-8">
-	<title>Shop</title>
-	<link rel="stylesheet"href="css\main.css">
-</head>
-<body>
-	
-	<header>
-	<nav class='menu'>
-	<a href='str\cart.html'>
-	<img src="img/minicart.jpg"/>
-	<span class="mini-cart"></span></a>
-	<a href='str\later.html'>Желания</a>
-	<a href="index.php">Главная</a>
-	</nav>
-	</header>
-	<div class='con'>
-		<div class='abside'>
-			<a class='m' href="">Фрукты</a><br>
-			<a class='m' href="">Овощи</a><br>
-			<a class='m' href="">Колбасные изделия</a><br>
-			<a class='m' href="">Молочные изделия</a><br>
-			<a class='m' href="">Сладости</a><br>
-			<a class='m' href="">Крупы</a><br>
-			<a class='m' href="">Напитки б/а</a><br>
-			<a class='m' href="">Алкогольные напитки</a><br>
-			<a class='m' href="">Рыба</a><br>
-			<a class='m' href="">Мясо</a>
-			<p>Сортировать по:</p>
-			<form class='filtr'>
-			<input type='radio'id="verh"/>
-			<label for="verh">возрастанию цены</label><br>
-			<input type='radio'id="niz"/>
-			<label for="niz">убыванию цены</label><br>
-			<input type='radio'id="pop"/>
-			<label for="pop">популярности</label><br>
-			</form>
-		</div>
-			
-		<div class="goods-out">
-		
-		</div>
-	</div>	
-	
-	<footer></footer>
-</body>
-</html>
+<?php
+require_once 'template/user/header.php';
+
+?>
+<div class='container'>
+    <h1>Главная страница</h1>
+</div>
+
+<?php
+require_once 'template/user/footer.php'
+?>

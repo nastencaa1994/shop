@@ -7,7 +7,7 @@ function connect(){
 	return $conn;
 }
 function loadGoods(){
-	$conn=connect();//подгрузка всей таблици goods
+	$conn=connect();//подгрузка всей таблици Goods
 	$sql="SELECT*FROM goods1";
 	$result=mysqli_query($conn,$sql);
 	if (mysqli_num_rows($result)>0){

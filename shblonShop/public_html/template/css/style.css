@@ -1,0 +1,12 @@
+*{
+    box-sizing: border-box;
+}
+.container{
+    width: 80vw;
+    margin: auto;
+}
+@media (min-width: 500px) {
+    .container{
+        width: 96vw;
+    }
+}

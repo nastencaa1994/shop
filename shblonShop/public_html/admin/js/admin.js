@@ -14,11 +14,11 @@ function showGoods(data){
 		out+=`<option data-id='${id}'>${data[id].name}</option>`;	
 	}
 	out+='</select>';
-	$('.goods-out').html(out);
-	$('.goods-out').on('change',selectGoods);
+	$('.Goods-out').html(out);
+	$('.Goods-out').on('change',selectGoods);
 }
 function selectGoods(){
-	var id=$('.goods-out select option:selected').attr('data-id');
+	var id=$('.Goods-out select option:selected').attr('data-id');
 	$.post(
 		"core.php",
 		{

@@ -1,7 +1,7 @@
 var cart={};
 function init(){
-	//вычитуем файл goods.json
-	//$.getJSON("goods.json", goodsOut);
+	//вычитуем файл Goods.json
+	//$.getJSON("Goods.json", goodsOut);
 	$.post(
 		'..\\core\\core.php',
 		{
@@ -18,7 +18,7 @@ function goodsOut(data){
 	for(var key in data){
 		out+='<div class="cart">';
 		out+='<button class="later"data-id="'+data[key].id+'">&#9829</button>';
-		out+='<p class="name"><a href="..\\str\\goods.html#'+data[key].id+'">'+data[key].name+'</a></p>';
+		out+='<p class="name"><a href="..\\str\\Goods.html#'+data[key].id+'">'+data[key].name+'</a></p>';
 		out+='<img src="img\\'+data[key].img+'"alt=""width="100%"height="53%"/>';
 		out+='<div class="cost">'+data[key].cost+'</div>';
 		out+='<button class="add-to-cart"data-id="'+data[key].id+'">Купить</button>';
@@ -31,7 +31,7 @@ function goodsOut(data){
 		// out+=`<button class="add-to-cart"data-id="${key}">Купить</button>`;
 		// out+='</div>';
 	}
-	$('.goods-out').html(out);
+	$('.Goods-out').html(out);
 	$('.add-to-cart').on('click',addToCart);
 	$('.later').on('click',addLater);
 }
