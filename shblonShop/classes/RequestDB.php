@@ -3,15 +3,15 @@ namespace DB;
 
 abstract class RequestDB
 {
-    private $login;
-    private $password;
-    private $localhost;
-    private $nameDB;
+    private $username="root";
+    private $password="root";
+    private $servername="localhost";
+    private $nameDB='TestShop';
     protected $conn;
 
     protected function __construct()
     {
-            $this->conn=mysqli_connect("localhost","root","root","eshop1");
+            $this->conn=mysqli_connect($this->servername,$this->username,$this->password,$this->nameDB);
             if(! $this->conn){
                 die("Connection failed: ".mysqli_connect_error());
             }

@@ -11,7 +11,7 @@ $ephone=htmlspecialchars ($_POST["ephone"]);
 $koment=htmlspecialchars ($_POST["koment"]);
 
 $message='';
-$message.='<h1>Заказ в магазине</h1>';//конкотиируем-т.е. добавляем строку в письмо
+$message.='<h1>Заказ в магазине</h1>';
 $message.='<p>Телефон: '.$ephone.'</p>';
 $message.='<p>Почта: '.$email.'</p>';
 $message.='<p>Клиент: '.$name.'</p>';
@@ -24,13 +24,13 @@ foreach($cart as $id=>$count){
 }
 $message.='Итоговая сумма'.$sum;
 //print_r($message);
-$to='nastencaa1994@gmail.com'.',';// почта продовца
+$to='nastencaa1994@gmail.com'.',';
 $to.=$email;
 $spectext='<DOCTYPE HTML><html><head><title>Заказ</title></head><body>';
 $headrs='MIME-Version:1.0'."\r\n";
 $headrs.='Content-type:text/html;charset=utf-8'."\r\n";
 $subject='заказ в магазине';
-$m=mail($to,$subject,$spectex.$message.'</body></html>',$headrs);
+$m=mail($to,$subject,$spectext.$message.'</body></html>',$headrs);
 if($m)echo 1;
 else echo 0;
 ?>
