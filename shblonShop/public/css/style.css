@@ -10,3 +10,22 @@
         width: 96vw;
     }
 }
+.content-admin-inner{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.side-bar-admin{
+    width: 32%;
+}
+.content-panel{
+    width: 65%;
+    border: 1px solid gray;
+}
+.top_panel{
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid gray;
+}
+.content-panel ul{
+    padding-top: 0.5rem;
+}

@@ -11,6 +11,7 @@ class View {
 	public function __construct($route) {
 		$this->route = $route;
 		$this->path = $route['controller'].'/'.$route['action'];
+        $this->layout = $route['layouts'];
 	}
 
 	public function render($title, $vars = []) {

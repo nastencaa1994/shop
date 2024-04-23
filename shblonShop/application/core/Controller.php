@@ -11,7 +11,7 @@ abstract class Controller {
 	public $acl;
 
 	public function __construct($route) {
-        print_r('$route');
+
 		$this->route = $route;
 
 		if (!$this->checkAcl()) {
@@ -31,7 +31,7 @@ abstract class Controller {
 	public function checkAcl() {
 		$this->acl = require 'application/acl/'.$this->route['controller'].'.php';
 		if ($this->isAcl('all')) {
-		    print_r('checkAcl');
+
 			return true;
 		}
 		elseif (isset($_SESSION['authorize']['id']) and $this->isAcl('authorize')) {
