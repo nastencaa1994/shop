@@ -11,6 +11,7 @@ class View {
 	public function __construct($route) {
 		$this->route = $route;
 		$this->path = $route['controller'].'/'.$route['action'];
+		$this->path = '/'.$route['view'];
         $this->layout = $route['layouts'];
 	}
 
@@ -19,9 +20,9 @@ class View {
 		$path = 'application/views/'.$this->path.'.php';
 		if (file_exists($path)) {
 			ob_start();
-			require $path;
+			require_once $path;
 			$content = ob_get_clean();
-			require 'application/views/layouts/'.$this->layout.'.php';
+            require_once 'application/views/layouts/'.$this->layout.'.php';
 		}
 	}
 

@@ -13,16 +13,19 @@ abstract class Controller {
 	public function __construct($route) {
 
 		$this->route = $route;
-
-		if (!$this->checkAcl()) {
-			View::errorCode(403);
-		}
+		print_r($route);
+//		if (!$this->checkAcl()) {
+//			View::errorCode(403);
+//		}
 		$this->view = new View($route);
 		$this->model = $this->loadModel($route['controller']);
 	}
 
 	public function loadModel($name) {
 		$path = 'application\models\\'.ucfirst($name);
+		echo '<br>';
+		print_r($path);
+        echo '<br>';
 		if (class_exists($path)) {
 			return new $path;
 		}

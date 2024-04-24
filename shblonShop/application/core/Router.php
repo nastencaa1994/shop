@@ -6,39 +6,30 @@ use application\core\View;
 
 class Router {
 
-    protected $routes = [];
-    protected $params = [];
-    
-    public function __construct() {
-        $arr = require 'application/config/routes.php';
-        foreach ($arr as $key => $val) {
-            $this->add($key, $val);
-        }
+    private static $listUrl=[];
+    private static $route = [];
+
+
+    public static function add($url,$view,$controller,$action,$layouts){
+        self::$listUrl[]=[
+            'url'=>$url,
+            'view'=>$view,
+            'controller'=>$controller,
+            'layouts'=>$layouts,
+            'action'=>$action
+        ];
     }
 
-    public function add($route, $params) {
-        $route = '#^'.$route.'$#';
-        $this->routes[$route] = $params;
-    }
+    public static function run(){
+        if (self::match()) {
 
-    public function match() {
-        $url = trim($_SERVER['REQUEST_URI'], '/');
-        foreach ($this->routes as $route => $params) {
-            if (preg_match($route, $url, $matches)) {
-                $this->params = $params;
-                return true;
-            }
-        }
-        return false;
-    }
+            $path = 'application\controllers\\'.ucfirst(self::$route['controller']).'Controller';
 
-    public function run(){
-        if ($this->match()) {
-            $path = 'application\controllers\\'.ucfirst($this->params['controller']).'Controller';
             if (class_exists($path)) {
-                $action = $this->params['action'].'Action';
+                $action = self::$route['action'].'Action';
+
                 if (method_exists($path, $action)) {
-                    $controller = new $path($this->params);
+                    $controller = new $path(self::$route);
                     $controller->$action();
                 } else {
                     View::errorCode(404);
@@ -49,6 +40,26 @@ class Router {
         } else {
             View::errorCode(404);
         }
+    }
+
+    private static function match() {
+        $url = trim($_SERVER['REQUEST_URI']);
+        foreach (self::$listUrl as  $route) {
+            if($url==''){
+                if(trim($route['url'],'/')== ''){
+                    self::$route = $route;
+                    return true;
+                }else{
+                    continue;
+                }
+            }else{
+                if (trim($route['url'])== $url) {
+                    self::$route = $route;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
