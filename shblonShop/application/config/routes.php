@@ -1,31 +1,10 @@
 <?php
+use application\core\Router;
 
-return [
+Router::add('/','main/index', 'MainController','index','default');
+Router::add('/login','account/login','Account','login','default');
+//Router::page('/about','about/index','AboutController');
 
-    '' => [
-        'controller' => 'main',
-        'action' => 'index',
-        'layouts'=>'default'
-    ],
-    'about' => [
-        'controller' => 'about',
-        'action' => 'index',
-        'layouts'=>'default'
-    ],
-    'catalog' => [
-        'controller' => 'catalog',
-        'action' => 'index',
-        'layouts'=>'default'
-    ],
-    'admin' => [
-        'controller' => 'admin',
-        'action' => 'index',
-        'layouts'=>'admin'
-    ],
-    'admin/news' => [
-        'controller' => 'admin',
-        'action' => 'news',
-        'layouts'=>'admin'
-    ],
-
-];
+//Router::add('/admin','admin/index','AdminController' , 'index');
+//Router::add('/admin/news','admin/news','AdminController','index');
+Router::run();
