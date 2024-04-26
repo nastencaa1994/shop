@@ -14,6 +14,7 @@ $column =
         'column_name' => 'id_user',
         'column_type' => 'VARCHAR(15)',
         'primary_key' => true,
+        'auto_increment' => true,
     ],
     
     [
@@ -79,5 +80,48 @@ $values=[
 ];
 
 $bd->addInRowTable($nameTable,$values);
+#
+Уделаение строк
+#
+
+$where=
+[
+    
+    'login'=>'admin2',
+    'name'=>'name2'
+];
 
 
+$bd->deleteRowTable($nameTable,$where);
+
+#
+Универсальный запрос
+#
+
+$sql="SELECT * FROM User WHERE 1=1";
+
+
+$res = $bd->requestDB($sql);
+
+#
+Запрос строк
+#
+
+$where=
+[
+    'login'=>'admin2',
+];
+
+$columns=['login','password'];
+
+
+$res = $bd->getRowTable($nameTable,$where,$columns);
+
+print_r($res);
+
+#
+Удаление таблиц
+#
+$nameTable = "User, Catalog";
+
+$bd->dropTable($nameTable);

@@ -17,45 +17,9 @@ $nameTable = 'User';
 
 
 
-//$column = [
-//    [
-//        'column_name' => 'id_user',
-//        'column_type' => 'INT',
-//        'primary_key' => true,
-//        'auto_increment' => true,
-//    ],
-//    [
-//        'column_name' => 'login',
-//        'column_type' => 'VARCHAR(250)',
-//        'required' => true,
-//    ],
-//    [
-//        'column_name' => 'password',
-//        'column_type' => 'VARCHAR(20)',
-//        'required' => true,
-//    ],
-//    [
-//        'column_name' => 'name',
-//        'column_type' => 'VARCHAR(20)',
-//    ],
-//    [
-//        'column_name' => 'phone',
-//        'column_type' => 'INT(20)',
-//    ],
-//    [
-//        'column_name' => 'data_create',
-//        'column_type' => 'DATE',
-//    ],
-//    [
-//        'column_name' => 'address',
-//        'column_type' => 'INT(255)',
-//    ],
-//
-//];
-//$bd->addTable($nameTable,$column);
 $values=[
     [
-        'login'=>'admin',
+        'login'=>'admin3',
         'password'=>'123',
         'name'=>'name',
         'phone'=>79991122333,
@@ -64,15 +28,44 @@ $values=[
     [
         'login'=>'admin2',
         'password'=>'1234',
-        'name'=>'name2',
+        'name'=>'name',
+        'phone'=>79991122331,
+        'data_create'=>date('Y-m-d')
+    ],
+    [
+        'login'=>'admin1',
+        'password'=>'1234',
+        'name'=>'name',
+        'phone'=>79991122331,
+        'data_create'=>date('Y-m-d')
+    ],
+    [
+        'login'=>'admin1',
+        'password'=>'1234',
+        'name'=>'name',
+        'phone'=>79991122331,
+        'data_create'=>date('Y-m-d')
+    ],
+    [
+        'login'=>'admin6',
+        'password'=>'1234',
+        'name'=>'name',
         'phone'=>79991122331,
         'data_create'=>date('Y-m-d')
     ],
 
 ];
-//
-//
-//
+
 $bd->addInRowTable($nameTable,$values);
+
+
+
+
+
+
+
+
+
+
 
 ?>

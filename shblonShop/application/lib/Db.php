@@ -19,17 +19,6 @@ class Db
         return $this->conn;
     }
 
-    /**
-     * //        $column[]=[
-     * //            'column_name'=>'name',-------* обязательно
-     * //            'column_type'=>'VARCHAR(30)',-------* обязательно
-     * //            'required'=>true,
-     * //            'primary_key'=>true,
-     * //            'auto_increment'=>true,
-     * //            'default'=>''
-     * //        ];
-     */
-
     public function addTable($nameTable, $column = [])
     {
 
@@ -73,7 +62,6 @@ class Db
                 }
             }
             $sql .= ")";
-            print_r($sql);
         if (mysqli_query($this->conn, $sql)) {
             echo "Table " . $nameTable . " created successfully";
         } else {
@@ -92,7 +80,7 @@ class Db
         if (!empty($where)) {
             $sql .= " WHERE 1=1 ";
             foreach ($where as $key => $item) {
-                $sql .= "and " . $key . " " . $item;
+                $sql .= " and " . $key . " = '" . $item."'";
             }
         }
         if (mysqli_query($this->conn, $sql)) {
@@ -108,7 +96,7 @@ class Db
         $sql = "DROP TABLE " . $nameTable;
 
         if (mysqli_query($this->conn, $sql)) {
-            echo "Table " . $nameTable . "  drop row";
+            echo "Table " . $nameTable . "  drop";
         } else {
             echo "Error drop table: " . mysqli_error($this->conn);
         }
@@ -122,20 +110,19 @@ class Db
             foreach ($columns as $item) {
                 $sql .= $item . ", ";
             }
-            $sql = chop($sql, ",");
+            $sql = trim($sql, ", ");
         } else {
             $sql .= "*";
         }
 
-        $sql .= " FROM" . $nameTable . " WHERE 1=1 ";
+        $sql .= " FROM " . $nameTable . " WHERE 1=1 ";
 
         if(!empty($where)){
-            foreach ($where as $item){
-                $sql .=  "and ". $item ;
+            foreach ($where as $key=>$item){
+                $sql .=  " and ".$key." = '". $item."' " ;
             }
         }
-        $result = mysqli_query($this->conn, $sql);
-        return $result;
+        return $this->requestDB($sql);
     }
 
     public function addInRowTable($nameTable, $values)
@@ -159,7 +146,6 @@ class Db
             $sql .= "), ";
         }
         $sql = trim($sql, ", ");
-        print_r($sql);
         if (mysqli_query($this->conn, $sql)) {
             echo "Table " . $nameTable . "  INSERT row";
         } else {
@@ -175,7 +161,7 @@ class Db
             print_r($sql);
             return ( print_r( mysqli_errors(), true));
         }
-        while($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
+        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             $ret['Items'][] = $row;
         }
         if (array_key_exists('Items', $ret)) {
@@ -186,9 +172,6 @@ class Db
         }
         return $ret;
 
-
-        $result = mysqli_query($this->conn, $request);
-        return $result;
     }
 
     public function __destruct()
