@@ -4,19 +4,18 @@ namespace application\lib;
 
 class Db
 {
-    private $username = "root";
-    private $password = "";
-    private $servername = "localhost";
-    private $nameDB = 'TestShop';
-    protected $conn;
+    const USER_NAME = "root";
+    const PASSWORD = "";
+    const SERVER_NAME = "localhost";
+    const NAME_DATA_BASE = 'TestShop';
+    public $conn;
 
     public function __construct()
     {
-        $this->conn = mysqli_connect($this->servername, $this->username, $this->password, $this->nameDB);
+        $this->conn = mysqli_connect(self::SERVER_NAME, self::USER_NAME, self::PASSWORD, self::NAME_DATA_BASE);
         if (!$this->conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
-        return $this->conn;
     }
 
     public function addTable($nameTable, $column = [])
@@ -147,9 +146,9 @@ class Db
         }
         $sql = trim($sql, ", ");
         if (mysqli_query($this->conn, $sql)) {
-            echo "Table " . $nameTable . "  INSERT row";
+            return true;
         } else {
-            echo "Error INSERT table: " . mysqli_error($this->conn);
+            return "Error INSERT table: " . mysqli_error($this->conn);
         }
     }
 
@@ -176,6 +175,6 @@ class Db
 
     public function __destruct()
     {
-        $this->conn->close();
+        mysqli_close($this->conn);
     }
 }

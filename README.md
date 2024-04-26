@@ -125,3 +125,44 @@ print_r($res);
 $nameTable = "User, Catalog";
 
 $bd->dropTable($nameTable);
+
+#
+Регистрация USER
+#
+use application\models\User;
+
+$user = new User();
+
+$values=[
+
+        'login'=>'adminTest2',
+        'password'=>'123a',
+        'name'=>'nameTest2',
+        'phone'=>79991122444,
+        'data_create'=>date('Y-m-d')
+];
+
+$res = $user->registration($values);
+
+#
+Авторизация USER
+#
+$user = new User();
+
+$login='admin6';
+
+$password='1234';
+
+$res = $user->authorizationUser($login,$password);
+
+#
+Получить user по id
+#
+
+$user = new User();
+
+$id = 1;
+
+$res = $user->getByIdUser($id);
+
+print_r($res);
