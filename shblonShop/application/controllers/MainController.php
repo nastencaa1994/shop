@@ -11,7 +11,7 @@ class MainController extends Controller {
 //		$vars = [
 //			'news' => $result,
 //		];
-		$this->view->render('Главная страница', []);
+		$this->view->render('Главная страница');
 	}
 
 }

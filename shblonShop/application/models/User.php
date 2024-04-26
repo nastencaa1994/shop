@@ -48,6 +48,8 @@ class User extends \application\core\Model
               if(!in_array($key, $this->notAddInPublicUserArr))
               $this->user[$key] = $item;
           }
+          setcookie("GROUP_USER", '1', time()-3600*24);// добавить группу в таблицу
+          setcookie("ID_USER", $this->user['id_user'], time()+3600*24);
           return  $this->user['id_user'];
       }else{
           return false;

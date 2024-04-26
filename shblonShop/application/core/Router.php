@@ -24,7 +24,6 @@ class Router {
         if (self::match()) {
 
             $path = 'application\controllers\\'.ucfirst(self::$route['controller']).'Controller';
-
             if (class_exists($path)) {
                 $action = self::$route['action'].'Action';
 
@@ -44,16 +43,16 @@ class Router {
 
     private static function match() {
         $url = trim($_SERVER['REQUEST_URI']);
-        foreach (self::$listUrl as  $route) {
-            if($url==''){
-                if(trim($route['url'],'/')== ''){
+        foreach (self::$listUrl as $route) {
+            if($url=='/'){
+                if(trim($route['url'],'/') == ''){
                     self::$route = $route;
                     return true;
                 }else{
                     continue;
                 }
             }else{
-                if (trim($route['url'])== $url) {
+                if (trim($route['url'],'/')== $url) {
                     self::$route = $route;
                     return true;
                 }
