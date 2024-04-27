@@ -69,8 +69,6 @@ class Db
         }else{
             return '$column empty';
         }
-
-
     }
 
     public function deleteRowTable($nameTable, $where = [])
@@ -152,7 +150,6 @@ class Db
         }
     }
 
-
     public function requestDB($sql){
         $ret=[];
         $result = mysqli_query($this->conn, $sql);
@@ -171,6 +168,42 @@ class Db
         }
         return $ret;
 
+    }
+
+    public function addColumn($nameTable,$column_name,$column_type, boolean $required, $default = ''){
+        $sql = "ALTER TABLE ".$nameTable." ADD  NOT NULL;";
+        if($column_name!=''){
+            $sql .= " ".$column_name;
+        }else{
+            return "$column_name - не должно быть пустым";
+        }
+        if($column_type!=''){
+            $sql .= " ".$column_type;
+        }else{
+            return "$column_type - не должно быть пустым";
+        }
+        if(is_bool($required)){
+            if($required){
+                $sql .= " NOT NULL";
+            }else{
+                if($default!=''){
+                    $sql .= " DEFAULT '".$default."'";
+                }else{
+                    $sql .= " IS NULL";
+                }
+            }
+        }else{
+            if($default!=''){
+                $sql .= " DEFAULT '".$default."'";
+            }else{
+                $sql .= " IS NULL";
+            }
+        }
+        if (mysqli_query($this->conn, $sql)) {
+            return true;
+        } else {
+            return "Error add сolumn table: " . mysqli_error($this->conn);
+        }
     }
 
     public function __destruct()
