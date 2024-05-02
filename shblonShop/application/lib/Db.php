@@ -170,7 +170,7 @@ class Db
 
     }
 
-    public function addColumn($nameTable,$column_name,$column_type, boolean $required, $default = ''){
+    public function addColumn($nameTable,$column_name,$column_type, bool $required, $default = ''){
         $sql = "ALTER TABLE ".$nameTable." ADD  NOT NULL;";
         if($column_name!=''){
             $sql .= " ".$column_name;
