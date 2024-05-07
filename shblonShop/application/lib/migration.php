@@ -2,6 +2,7 @@
 use application\lib\CreateTable;
 
 $migrate = new CreateTable();
+var_dump($migrate);
 
 $files = $migrate->getMigrationFiles();
 
