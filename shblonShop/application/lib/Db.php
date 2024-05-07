@@ -2,6 +2,9 @@
 
 namespace application\lib;
 
+use PDO;
+use PDOException;
+
 class Db
 {
     const USER_NAME = "root";
@@ -12,11 +15,15 @@ class Db
 
     public function __construct()
     {
-        $this->conn = mysqli_connect(self::SERVER_NAME, self::USER_NAME, self::PASSWORD, self::NAME_DATA_BASE);
-        if (!$this->conn) {
-            die("Connection failed: " . mysqli_connect_error());
+
+        try {
+            $this->conn = new PDO('mysql:host=localhost;dbname=TestShop', self::USER_NAME, self::PASSWORD);
+        } catch (PDOException $Exception) {// не срабатывает
+            echo 'Error connection database';
+            die();
         }
     }
+
 
     public function addTable($nameTable, $column = [])
     {
@@ -24,10 +31,10 @@ class Db
         $primaryKeyCheck = true;
         $autoIncrementCheck = true;
         $sql = "CREATE TABLE IF NOT EXISTS " . $nameTable . " (";
-        if(!empty($column)){
+        if (!empty($column)) {
             foreach ($column as $index => $items) {
 
-                $sql .= $items["column_name"] . " " . $items["column_type"] ;
+                $sql .= $items["column_name"] . " " . $items["column_type"];
                 if (isset($items["default"])) {
                     echo 'sss';
                     $sql .= " DEFAULT(" . $items["default"] . ")";
@@ -47,7 +54,7 @@ class Db
                     if (isset($items["primary_key"]) && $items["primary_key"] === true) {
                         if ($primaryKeyCheck) {
                             $primaryKeyCheck = false;
-                            $sql .= " ,PRIMARY KEY(".$items["column_name"].")";
+                            $sql .= " ,PRIMARY KEY(" . $items["column_name"] . ")";
                         } else {
                             die('Error - primary_key - only in one column');
                         }
@@ -61,12 +68,14 @@ class Db
                 }
             }
             $sql .= ")";
-        if (mysqli_query($this->conn, $sql)) {
-            echo "Table " . $nameTable . " created successfully";
+            try {
+                $this->conn->query($sql);
+                return true;
+            } catch (PDOException $Exception) {// не срабатывает
+                echo "Error creating table: <br>";
+                print_r($Exception);
+            }
         } else {
-            echo "Error creating table: " . mysqli_error($this->conn);
-        }
-        }else{
             return '$column empty';
         }
     }
@@ -77,30 +86,39 @@ class Db
         if (!empty($where)) {
             $sql .= " WHERE 1=1 ";
             foreach ($where as $key => $item) {
-                $sql .= " and " . $key . " = '" . $item."'";
+                $sql .= " and " . $key . " = '" . $item . "'";
             }
         }
-        if (mysqli_query($this->conn, $sql)) {
-            echo "Table " . $nameTable . "  delete row";
-        } else {
-            echo "Error delete table: " . mysqli_error($this->conn);
+        try {
+            $this->conn->query($sql);
+            return true;
+        } catch (PDOException $Exception) {// не срабатывает
+            echo "Error delete table: <br>";
+            print_r($Exception);
         }
     }
 
     public function dropTable($nameTable)
     {
+        if ($nameTable != '') {
 
-        $sql = "DROP TABLE " . $nameTable;
 
-        if (mysqli_query($this->conn, $sql)) {
-            echo "Table " . $nameTable . "  drop";
-        } else {
-            echo "Error drop table: " . mysqli_error($this->conn);
+            $sql = "DROP TABLE " . $nameTable;
+
+            try {
+                $this->conn->query($sql);
+                return true;
+            } catch (PDOException $Exception) {// не срабатывает
+                echo "Error drop table: <br>";
+                print_r($Exception);
+            }
+        }else{
+            echo "The nameTable - should not be empty";
         }
     }
 
     //только простой запрос - более сложные в дочернем
-    public function getRowTable(string $nameTable, $where = [], $columns = [])
+    public function getRowTable(string $nameTable, $where = [], $columns = [], $limit = 1000)
     {
         $sql = "SELECT ";
         if (!empty($columns)) {
@@ -114,11 +132,13 @@ class Db
 
         $sql .= " FROM " . $nameTable . " WHERE 1=1 ";
 
-        if(!empty($where)){
-            foreach ($where as $key=>$item){
-                $sql .=  " and ".$key." = '". $item."' " ;
+        if (!empty($where)) {
+            foreach ($where as $key => $item) {
+                $sql .= " and " . $key . " = '" . $item . "' ";
             }
         }
+        $sql.='LIMIT '.$limit;
+
         return $this->requestDB($sql);
     }
 
@@ -137,77 +157,78 @@ class Db
             }
             $sql .= "(";
             foreach ($columnName as $i => $name) {
-                $sql .= "'".$valueItems[$name] . "', ";
+                $sql .= "'" . $valueItems[$name] . "', ";
             }
             $sql = trim($sql, ", ");
             $sql .= "), ";
         }
         $sql = trim($sql, ", ");
-        if (mysqli_query($this->conn, $sql)) {
+        try {
+            $this->conn->query($sql);
             return true;
+        } catch (PDOException $Exception) {// не срабатывает
+            echo "Error INSERT table: <br>";
+            print_r($Exception);
+        }
+    }
+
+    public function requestDB($sql)
+    {
+        try {
+            $result = $this->conn ->query($sql);
+
+            $data=[];
+            while ($row = $result->fetch(PDO::FETCH_NUM)) {
+                $data[] = $row;
+            }
+            return $data;
+        } catch (PDOException $Exception) {// не срабатывает
+            echo "Error: <br>";
+            print_r($Exception);
+        }
+    }
+
+    public function addColumn($nameTable, $column_name, $column_type, bool $required, $default = '')
+    {
+        $sql = "ALTER TABLE " . $nameTable . " ADD  NOT NULL;";
+        if ($column_name != '') {
+            $sql .= " " . $column_name;
         } else {
-            return "Error INSERT table: " . mysqli_error($this->conn);
-        }
-    }
-
-    public function requestDB($sql){
-        $ret=[];
-        $result = mysqli_query($this->conn, $sql);
-        if( $result === false ) {
-            print_r($sql);
-            return ( print_r( mysqli_errors(), true));
-        }
-        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $ret['Items'][] = $row;
-        }
-        if (array_key_exists('Items', $ret)) {
-            $ret['Total'] = count($ret['Items']);
-        }
-        else {
-            $ret['Total'] = 0;
-        }
-        return $ret;
-
-    }
-
-    public function addColumn($nameTable,$column_name,$column_type, bool $required, $default = ''){
-        $sql = "ALTER TABLE ".$nameTable." ADD  NOT NULL;";
-        if($column_name!=''){
-            $sql .= " ".$column_name;
-        }else{
             return "$column_name - не должно быть пустым";
         }
-        if($column_type!=''){
-            $sql .= " ".$column_type;
-        }else{
+        if ($column_type != '') {
+            $sql .= " " . $column_type;
+        } else {
             return "$column_type - не должно быть пустым";
         }
-        if(is_bool($required)){
-            if($required){
+        if (is_bool($required)) {
+            if ($required) {
                 $sql .= " NOT NULL";
-            }else{
-                if($default!=''){
-                    $sql .= " DEFAULT '".$default."'";
-                }else{
+            } else {
+                if ($default != '') {
+                    $sql .= " DEFAULT '" . $default . "'";
+                } else {
                     $sql .= " IS NULL";
                 }
             }
-        }else{
-            if($default!=''){
-                $sql .= " DEFAULT '".$default."'";
-            }else{
+        } else {
+            if ($default != '') {
+                $sql .= " DEFAULT '" . $default . "'";
+            } else {
                 $sql .= " IS NULL";
             }
         }
-        if (mysqli_query($this->conn, $sql)) {
+        try {
+            $this->conn->query($sql);
             return true;
-        } else {
-            return "Error add сolumn table: " . mysqli_error($this->conn);
+        } catch (PDOException $Exception) {// не срабатывает
+            echo "Error add column table: <br>";
+            print_r($Exception);
         }
     }
 
     public function __destruct()
     {
-        mysqli_close($this->conn);
+        $this->conn = null;
     }
 }

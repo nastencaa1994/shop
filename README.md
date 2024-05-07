@@ -3,7 +3,7 @@
 #
 use application\lib\Db;
 
-$bd = new Db();
+$db = new Db();
 
 $nameTable = 'User';
 
@@ -36,7 +36,7 @@ $column =
     
     [
         'column_name' => 'phone',
-        'column_type' => 'INT(20)',
+        'column_type' => 'BIGINT',
     ],
     
     [
@@ -52,7 +52,7 @@ $column =
 ];
 
 
-$bd->addTable($nameTable, $column);
+$db->addTable($nameTable, $column);
 
 #
 Добавление строк в DB
@@ -79,7 +79,7 @@ $values=[
     
 ];
 
-$bd->addInRowTable($nameTable,$values);
+$db->addInRowTable($nameTable,$values);
 #
 Уделаение строк
 #
@@ -92,7 +92,7 @@ $where=
 ];
 
 
-$bd->deleteRowTable($nameTable,$where);
+$db->deleteRowTable($nameTable,$where);
 
 #
 Универсальный запрос
@@ -101,7 +101,7 @@ $bd->deleteRowTable($nameTable,$where);
 $sql="SELECT * FROM User WHERE 1=1";
 
 
-$res = $bd->requestDB($sql);
+$res = $db->requestDB($sql);
 
 #
 Запрос строк
@@ -114,8 +114,13 @@ $where=
 
 $columns=['login','password'];
 
+//не отправлять $columns или отправлять пустой - что бы получить все столбцы
 
-$res = $bd->getRowTable($nameTable,$where,$columns);
+//не отправлять $where или отправлять пустой - все стороки
+
+//$limit по умолчанию 1000
+
+$res = $db->getRowTable($nameTable,$where,$columns,$limit);
 
 print_r($res);
 
@@ -124,7 +129,7 @@ print_r($res);
 #
 $nameTable = "User, Catalog";
 
-$bd->dropTable($nameTable);
+$db->dropTable($nameTable);
 
 #
 Регистрация USER

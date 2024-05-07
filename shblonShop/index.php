@@ -9,10 +9,15 @@ require_once 'application/config/routes.php';
 
 
 echo '<pre>';
+
+$db = new \application\lib\Db();
+
+
+
 //session_start();
 //print_r($_COOKIE);
 
-require_once "application\lib\migration.php"
+//require_once "application\lib\migration.php"
 //use application\models\User;
 //$user = new User();
 //print_r($user);
