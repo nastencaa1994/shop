@@ -23,10 +23,11 @@ class User extends \application\core\Model
             $where['password'] =$password;
         }
         $res =   $this->db->getRowTable(self::TABLE_NAME, $where);
-        if($res['Total']==1){
+
+        if(count($res)==1){
             $this->login=$login;
             $this->password=$password;
-            return $res['Items'][0];
+            return $res[0];
         }else{
             return false;
         }
@@ -34,8 +35,8 @@ class User extends \application\core\Model
     public function getByIdUser($id){
         $where['id_user'] = $id;
         $res = $this->db->getRowTable(self::TABLE_NAME, $where);
-        if($res['Total']==1){
-            return $res['Items'][0];
+        if(count($res)==1){
+            return $res[0];
         }else{
             return false;
         }
@@ -48,8 +49,8 @@ class User extends \application\core\Model
               if(!in_array($key, $this->notAddInPublicUserArr))
               $this->user[$key] = $item;
           }
-          setcookie("GROUP_USER", '1', time()-3600*24);// добавить группу в таблицу
-          setcookie("ID_USER", $this->user['id_user'], time()+3600*24);
+//          setcookie("GROUP_USER", '1', time()-3600*24);// добавить группу в таблицу
+          setcookie("AUTHORIZATION", $this->user['id_user'], time()+3600*24);
           return  $this->user['id_user'];
       }else{
           return false;

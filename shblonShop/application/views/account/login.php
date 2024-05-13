@@ -1,12 +1,12 @@
 <div class="container">
-    <form class="row g-3">
+    <form class="row g-3" onsubmit="event.preventDefault();  postAuthorization('formAuthorization')" method="post" id="formAuthorization">
         <div class="col-md-4">
-            <label for="validationServer01" class="form-label">email</label>
-            <input type="email" class="form-control" id="validationServer01" value="" required>
+            <label for="validationServer01" class="form-label">логин</label>
+            <input type="text" class="form-control" name="login" id="validationServer01" value="" required>
         </div>
         <div class="col-md-4">
             <label for="validationServer02" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="validationServer02" value="" required>
+            <input type="password" class="form-control" name="password" id="validationServer02" value="" required>
             <div class="valid-feedback">
                 Looks good!
             </div>
@@ -17,8 +17,9 @@
     </form>
 </div>
 <script>
-    function postAuthorization(formId) {
-        alert(formId);
+    function postAuthorization(idForm) {
+
+        console.log( $('#'+idForm).serialize())
         // $.ajax({
         //     type: "POST",
         //     url: "/parent/create/create.php",
@@ -38,5 +39,6 @@
         //     }
         // })
     }
+
 
 </script>

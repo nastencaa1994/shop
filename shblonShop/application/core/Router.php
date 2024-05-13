@@ -22,11 +22,9 @@ class Router {
 
     public static function run(){
         if (self::match()) {
-
             $path = 'application\controllers\\'.ucfirst(self::$route['controller']).'Controller';
             if (class_exists($path)) {
                 $action = self::$route['action'].'Action';
-
                 if (method_exists($path, $action)) {
                     $controller = new $path(self::$route);
                     $controller->$action();
@@ -52,7 +50,7 @@ class Router {
                     continue;
                 }
             }else{
-                if (trim($route['url'],'/')== $url) {
+                if ($route['url'] == $url) {
                     self::$route = $route;
                     return true;
                 }

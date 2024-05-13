@@ -1,19 +1,13 @@
 <?php
-
-/**
- * зафигач статью как допишешь на vс
- */
-
 namespace application\lib;
 
 use application\lib\Db;
 use PDO;
 
-
-class CreateTable
+class MigrationExecFilesInDB
 {
     public $db;
-    const DB_TABLE_VERSIONS = 'MigrateFileCheck';
+    const DB_TABLE_VERSIONS = 'migratefilecheck';
 
     public function __construct()
     {
@@ -23,48 +17,48 @@ class CreateTable
     function getMigrationFiles()
     {
         $sqlFolder = str_replace('\\', '/', realpath(dirname(__FILE__)) . "\\dbCreate" . '/');
-        $data = [];
         $allFiles = glob($sqlFolder . '*.sql');
+        return $allFiles;
+    }
 
+    public function getLatestMigrationData(){
         $result = $this->db->conn->query("show tables");
-
+        $data = [];
         while ($row = $result->fetch(PDO::FETCH_NUM)) {
             $data[] = $row[0];
         }
-
-        // Первая миграция, возвращаем все файлы из папки sql
         if (count($data) == 0) {
-            print_r($allFiles);
-            return $allFiles;
+            return [];
         }
-
-        // Ищем уже существующие миграции
         $versionsFiles = [];
-        // Выбираем из таблицы versions все названия файлов
         $nameTableSQL = "SELECT file FROM " . self::DB_TABLE_VERSIONS;
-
-        $data = $this->db->conn->query($nameTableSQL);
+        $data = $this->db->requestAndExcludeErrors($nameTableSQL);
         while ($row = $data->fetch(PDO::FETCH_OBJ)) {
             $versionsFiles[] = $row->file;
         }
+        return $versionsFiles;
+    }
+
+    public function compareArrFileNames($allFiles, $oldArrFileNames){
         foreach ($allFiles as $index => $file) {
-            if (in_array(basename($file), $versionsFiles)) {
+            if (in_array(basename($file), $oldArrFileNames)) {
                 unset($allFiles[$index]);
             }
         }
         return $allFiles;
     }
 
-    function migrate($file)
+    function sendFileAndRecordMigration($file)
     {
-
         $sql = file_get_contents($file);
-
         $qr = $this->db->conn->exec($sql);
+        $this->writeNameFileInDb(basename($file));
 
-        $sqlAddMigrateTable = "INSERT INTO " . self::DB_TABLE_VERSIONS . " (file) VALUE ( '" . basename($file) . "')";
+    }
 
-        $qr = $this->db->conn->query($sqlAddMigrateTable);
+    public function writeNameFileInDb($nameFile){
+        $sqlAddMigrateTable = "INSERT INTO " . self::DB_TABLE_VERSIONS . " (file) VALUE ( '" . $nameFile . "')";
+        return $this->db->requestAndExcludeErrors($sqlAddMigrateTable);
 
     }
 }

@@ -15,25 +15,31 @@ class Db
 
     public function __construct()
     {
-
         try {
             $this->conn = new PDO('mysql:host=localhost;dbname=TestShop', self::USER_NAME, self::PASSWORD);
-        } catch (PDOException $Exception) {// не срабатывает
+        } catch (PDOException $Exception) {
             echo 'Error connection database';
             die();
         }
     }
 
+    public function requestAndExcludeErrors($sqlRequest){
+        try {
+            $res = $this->conn->query($sqlRequest);
+            return $res;
+        } catch (PDOException $Exception) {
+            return $Exception;
+        }
+    }
 
     public function addTable($nameTable, $column = [])
     {
-
         $primaryKeyCheck = true;
         $autoIncrementCheck = true;
+
         $sql = "CREATE TABLE IF NOT EXISTS " . $nameTable . " (";
         if (!empty($column)) {
             foreach ($column as $index => $items) {
-
                 $sql .= $items["column_name"] . " " . $items["column_type"];
                 if (isset($items["default"])) {
                     echo 'sss';
@@ -59,22 +65,13 @@ class Db
                             die('Error - primary_key - only in one column');
                         }
                     }
-
                 }
-
-
                 if ($index + 1 != count($column)) {
                     $sql .= ",";
                 }
             }
             $sql .= ")";
-            try {
-                $this->conn->query($sql);
-                return true;
-            } catch (PDOException $Exception) {// не срабатывает
-                echo "Error creating table: <br>";
-                print_r($Exception);
-            }
+           return $this->requestAndExcludeErrors($sql);
         } else {
             return '$column empty';
         }
@@ -89,37 +86,23 @@ class Db
                 $sql .= " and " . $key . " = '" . $item . "'";
             }
         }
-        try {
-            $this->conn->query($sql);
-            return true;
-        } catch (PDOException $Exception) {// не срабатывает
-            echo "Error delete table: <br>";
-            print_r($Exception);
-        }
+        return $this->requestAndExcludeErrors($sql);
     }
 
     public function dropTable($nameTable)
     {
         if ($nameTable != '') {
-
-
             $sql = "DROP TABLE " . $nameTable;
-
-            try {
-                $this->conn->query($sql);
-                return true;
-            } catch (PDOException $Exception) {// не срабатывает
-                echo "Error drop table: <br>";
-                print_r($Exception);
-            }
+            return $this->requestAndExcludeErrors($sql);
         }else{
             echo "The nameTable - should not be empty";
         }
     }
 
     //только простой запрос - более сложные в дочернем
-    public function getRowTable(string $nameTable, $where = [], $columns = [], $limit = 1000)
+    public function getRowTable($nameTable, $where = [], $columns = [])
     {
+        $limit = 1000;
         $sql = "SELECT ";
         if (!empty($columns)) {
             foreach ($columns as $item) {
@@ -163,13 +146,8 @@ class Db
             $sql .= "), ";
         }
         $sql = trim($sql, ", ");
-        try {
-            $this->conn->query($sql);
-            return true;
-        } catch (PDOException $Exception) {// не срабатывает
-            echo "Error INSERT table: <br>";
-            print_r($Exception);
-        }
+
+        return $this->requestAndExcludeErrors($sql);
     }
 
     public function requestDB($sql)
@@ -178,7 +156,7 @@ class Db
             $result = $this->conn ->query($sql);
 
             $data=[];
-            while ($row = $result->fetch(PDO::FETCH_NUM)) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $data[] = $row;
             }
             return $data;
@@ -218,13 +196,8 @@ class Db
                 $sql .= " IS NULL";
             }
         }
-        try {
-            $this->conn->query($sql);
-            return true;
-        } catch (PDOException $Exception) {// не срабатывает
-            echo "Error add column table: <br>";
-            print_r($Exception);
-        }
+
+        return $this->requestAndExcludeErrors($sql);
     }
 
     public function __destruct()

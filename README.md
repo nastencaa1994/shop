@@ -118,9 +118,7 @@ $columns=['login','password'];
 
 //не отправлять $where или отправлять пустой - все стороки
 
-//$limit по умолчанию 1000
-
-$res = $db->getRowTable($nameTable,$where,$columns,$limit);
+$res = $db->getRowTable($nameTable,$where,$columns);
 
 print_r($res);
 
