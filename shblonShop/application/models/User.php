@@ -11,7 +11,7 @@ class User extends \application\core\Model
     public $user;
     private $login;
     private $password;
-    private $notAddInPublicUserArr = [
+    protected $notAddInPublicUserArr = [
         'login','password'
     ];
 
@@ -39,34 +39,6 @@ class User extends \application\core\Model
             return $res[0];
         }else{
             return false;
-        }
-    }
-
-    public function authorizationUser($login,$password){
-      $result = $this->getUser($login,$password);
-      if($result){
-          foreach ($result as $key=>$item){
-              if(!in_array($key, $this->notAddInPublicUserArr))
-              $this->user[$key] = $item;
-          }
-//          setcookie("GROUP_USER", '1', time()-3600*24);// добавить группу в таблицу
-          setcookie("AUTHORIZATION", $this->user['id_user'], time()+3600*24);
-          return  $this->user['id_user'];
-      }else{
-          return false;
-      }
-    }
-
-    public function registration($data){
-        $result = $this->getUser($data['login']);
-        if($result){
-            return 'пользоваталь с таким логином уже зарегестрирован';
-        }else{
-            $values[]=$data;
-            $registration = $this->db->addInRowTable(self::TABLE_NAME, $values);
-            if($registration == true){
-                return $this->authorizationUser($data["login"],$data["password"]);
-            }
         }
     }
 

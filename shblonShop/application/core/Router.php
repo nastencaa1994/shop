@@ -10,13 +10,21 @@ class Router {
     private static $route = [];
 
 
-    public static function add($url,$view,$controller,$action,$layouts){
+    public static function add($url,$view,$controller,$method,$layouts){
         self::$listUrl[]=[
             'url'=>$url,
             'view'=>$view,
             'controller'=>$controller,
             'layouts'=>$layouts,
-            'action'=>$action
+            'method'=>$method
+        ];
+    }
+
+    public static function post($url, $controller, $method){
+        self::$listUrl[]=[
+            'url'=>$url,
+            'controller'=>$controller,
+            'method'=>$method
         ];
     }
 
@@ -24,7 +32,7 @@ class Router {
         if (self::match()) {
             $path = 'application\controllers\\'.ucfirst(self::$route['controller']).'Controller';
             if (class_exists($path)) {
-                $action = self::$route['action'].'Action';
+                $action = self::$route['method'];
                 if (method_exists($path, $action)) {
                     $controller = new $path(self::$route);
                     $controller->$action();

@@ -1,10 +1,11 @@
 <?php
 use application\core\Router;
-//
+
 Router::add('/','main/index', 'Main','index','default');
-Router::add('/login','account/login','Account','login','default');
-////Router::page('/about','about/index','AboutController');
-//
-////Router::add('/admin','admin/index','AdminController' , 'index');
-////Router::add('/admin/news','admin/news','AdminController','index');
+Router::add('/authorization','account/auto','Account','auto','default');
+Router::add('/registration','account/registration','Account','reg','default');
+Router::add('/lk','account/lk','Account','lk','default');
+Router::post('/auto','Auto','authorization');
+Router::post('/reg','Auto','registration');
+
 Router::run();

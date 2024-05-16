@@ -129,6 +129,7 @@ class Db
     {
         $sql = " INSERT INTO " . $nameTable . "(";
         $columnName = [];
+
         foreach ($values as $index => $valueItems) {
             if ($index == 0) {
                 foreach ($valueItems as $key => $item) {
@@ -146,6 +147,7 @@ class Db
             $sql .= "), ";
         }
         $sql = trim($sql, ", ");
+        print_r($sql);
 
         return $this->requestAndExcludeErrors($sql);
     }

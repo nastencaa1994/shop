@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('error_reporting', E_ALL);
-echo '<pre>';
+
 
 require_once 'vendor/autoload.php';
 require_once 'application/config/const.php';
@@ -12,7 +12,7 @@ require_once 'application/config/routes.php';
 */
 
 use application\models\User;
-
+echo '<pre>';
 //$id = 1;
 //$res = $user->getByIdUser($id);
 //$test = $user->authorizationUser($res['login'],$res['password']);

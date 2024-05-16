@@ -1,5 +1,6 @@
 <div class="container">
-    <form class="row g-3" onsubmit="event.preventDefault();  postAuthorization('formAuthorization')" method="post" id="formAuthorization">
+    <form class="row g-3" action="/auto"  method="post" id="formAuthorization">
+<!--        onsubmit="event.preventDefault();  postAuthorization('formAuthorization')"-->
         <div class="col-md-4">
             <label for="validationServer01" class="form-label">логин</label>
             <input type="text" class="form-control" name="login" id="validationServer01" value="" required>

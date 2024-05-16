@@ -10,7 +10,7 @@ class View {
 
 	public function __construct($route) {
 		$this->route = $route;
-		$this->path = $route['controller'].'/'.$route['action'];
+		$this->path = $route['controller'].'/'.$route['method'];
 		$this->path = '/'.$route['view'];
         $this->layout = $route['layouts'];
 	}
