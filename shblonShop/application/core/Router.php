@@ -4,6 +4,12 @@ namespace application\core;
 
 use application\core\View;
 
+/**
+ * Класс для работы с маршрутами
+ *
+ * Class Router
+ * @package application\core
+ */
 class Router {
 
     private static $listUrl=[];

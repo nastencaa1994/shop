@@ -1,20 +1,37 @@
 <?php
 
-
 namespace application\controllers;
+
 use application\core\Controller;
 
-class AccountController extends Controller
-{
-    public function auto(){
+/**
+ * Класс для обработки аторизации юзера
+ *
+ * Class AccountController
+ * @package application\controllers
+ */
+
+class AccountController extends Controller {
+
+    /**
+     * Метод открывает шаблон 'Авторизация'
+     */
+    public function auto() {
         $this->view->render('Авторизация');
     }
 
-    public function lk(){
+    /**
+     * Метод открывает шаблон 'Личный кабинет'
+     */
+    public function lk() {
         $this->view->render('Личный кабинет');
     }
 
-    public function reg(){
+    /**
+     * Метод открывает шаблон 'Регистрация'
+     */
+    public function reg() {
         $this->view->render('Регистрация');
     }
+
 }

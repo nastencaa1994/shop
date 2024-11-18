@@ -2,6 +2,12 @@
 
 namespace application\core;
 
+/**
+ * Метод для открытия шаблонов
+ *
+ * Class View
+ * @package application\core
+ */
 class View {
 
 	public $path;

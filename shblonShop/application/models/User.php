@@ -3,7 +3,12 @@
 
 namespace application\models;
 
-
+/**
+ * Класс для работы с юзером
+ *
+ * Class User
+ * @package application\models
+ */
 class User extends \application\core\Model
 {
 
@@ -15,9 +20,15 @@ class User extends \application\core\Model
         'login','password'
     ];
 
+    /**
+     * Метод проверяет есть ли юзер c указаным логином и паролем
+     *
+     * @param $login
+     * @param string $password
+     * @return false|mixed - если не заррегистрирован возвращает фолс, если масив с данными юзера
+     */
+    protected function getUser($login, $password = '') {
 
-    protected function getUser($login, $password = '')
-    {
         $where['login'] = $login;
         if(!empty($password)){
             $where['password'] =$password;
@@ -32,7 +43,14 @@ class User extends \application\core\Model
             return false;
         }
     }
-    public function getByIdUser($id){
+
+    /**
+     * Запрос юзера по id
+     *
+     * @param $id
+     * @return false|mixed
+     */
+    public function getByIdUser($id) {
         $where['id_user'] = $id;
         $res = $this->db->getRowTable(self::TABLE_NAME, $where);
         if(count($res)==1){
@@ -42,10 +60,13 @@ class User extends \application\core\Model
         }
     }
 
-    public function __destruct()
-    {
+    /**
+     * Деавторизация юзера
+     */
+    public function __destruct() {
         $this->login = '';
         $this->password = '';
         $this->user = [];
     }
+
 }
