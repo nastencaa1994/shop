@@ -8,7 +8,7 @@ require_once 'vendor/autoload.php';
 require_once 'application/config/const.php';
 require_once 'application/config/routes.php';
 /**
- * require_once "application\lib\migration.php" - запускает миграцию
+  require_once "application\lib\migration.php" - запускает миграцию
 */
 
 use application\models\User;
