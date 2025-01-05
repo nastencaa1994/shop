@@ -2,6 +2,7 @@
 
 namespace application\lib;
 
+use application\lib\MigrationExecFilesInDB;
 use PDO;
 use PDOException;
 
@@ -10,16 +11,39 @@ class Db
     const USER_NAME = "root";
     const PASSWORD = "";
     const SERVER_NAME = "localhost";
-    const NAME_DATA_BASE = 'TestShop';
+    const NAME_DATA_BASE = 'test_shop';
     public $conn;
 
     public function __construct()
     {
         try {
-            $this->conn = new PDO('mysql:host=localhost;dbname=TestShop', self::USER_NAME, self::PASSWORD);
+            $this->conn = new PDO('mysql:host=localhost;dbname='.self::NAME_DATA_BASE, self::USER_NAME, self::PASSWORD);
         } catch (PDOException $Exception) {
-            echo 'Error connection database';
-            die();
+            try {
+                $this->conn = new PDO('mysql:host=localhost', self::USER_NAME, self::PASSWORD);
+                $databases = $this->conn->query('SHOW DATABASES');
+
+               // перебор всех bd, если self::NAME_DATA_BASE существует значит выводим ошибку, если нет создаем базу
+                while ($row = $databases->fetch(PDO::FETCH_ASSOC)) {
+                    if($row['Database'] == self::NAME_DATA_BASE) {
+                        echo 'Error connection database';
+                        print_r($Exception);
+                        die();
+                    }
+                }
+
+                $this->conn->query('CREATE DATABASE '.self::NAME_DATA_BASE);
+                $this->conn = new PDO('mysql:host=localhost;dbname='.self::NAME_DATA_BASE, self::USER_NAME, self::PASSWORD);
+
+                // запускаем миграцию
+                $migrate = new MigrationExecFilesInDB();
+                $migrate->run();
+
+            } catch(PDOException $Exception) {
+                echo 'Error connection database';
+                print_r($Exception);
+                die();
+            }
         }
     }
 
@@ -147,7 +171,6 @@ class Db
             $sql .= "), ";
         }
         $sql = trim($sql, ", ");
-        print_r($sql);
 
         return $this->requestAndExcludeErrors($sql);
     }

@@ -14,6 +14,22 @@ class MigrationExecFilesInDB
         $this->db = new Db();
     }
 
+    public function run() {
+
+        $allFiles = $this->getMigrationFiles();
+        $oldArrFileNames = $this->getLatestMigrationData();
+        $newArrFileNames = $this->compareArrFileNames($allFiles, $oldArrFileNames);
+
+        if (empty($newArrFileNames)) { // БД в актуальном состоянии
+           return;
+        } else {
+            // Начинаем миграцию
+            foreach ($newArrFileNames as $file) {
+                $this->sendFileAndRecordMigration($file);
+            }
+        }
+    }
+
     function getMigrationFiles()
     {
         $sqlFolder = str_replace('\\', '/', realpath(dirname(__FILE__)) . "\\dbCreate" . '/');
